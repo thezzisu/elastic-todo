@@ -5,7 +5,15 @@
       <VDivider />
     </VList>
     <template #append>
-      <VListItem prepend-icon="mdi-playlist-plus" title="New list" to="/list/new" />
+      <div class="d-flex">
+        <VListItem
+          prepend-icon="mdi-playlist-plus"
+          title="New list"
+          to="/list/new"
+          class="flex-fill"
+        />
+        <VBtn icon="mdi-cog" variant="text" to="/settings" />
+      </div>
     </template>
   </VNavigationDrawer>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <VAppBar border>
     <VAppBarNavIcon @click="appState.navBar = !appState.navBar" />
-    <VAppBarTitle>ElasticTODO</VAppBarTitle>
+    <VAppBarTitle>{{ appState.title }}</VAppBarTitle>
   </VAppBar>
 </template>
 
