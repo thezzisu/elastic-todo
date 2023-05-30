@@ -26,7 +26,7 @@ import { providers } from '@/providers'
 import { db } from '@/database'
 
 const store = useDataSources()
-const icons = Object.fromEntries(providers.map((p) => [p.id, p.icon]))
+const icons = Object.fromEntries(Object.values(providers).map((p) => [p.id, p.icon]))
 
 async function remove(id: number) {
   await db.dataSources.delete(id)

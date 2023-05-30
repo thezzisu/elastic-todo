@@ -23,6 +23,6 @@ export class AppDatabase extends Dexie {
 
 export const db = new AppDatabase()
 
-export const useQuery = <T>(querier: () => T | Promise<T>) => {
-  return useObservable(liveQuery(querier) as unknown as Observable<T>)
+export const useQuery = <T>(querier: () => T | Promise<T>, initialValue?: T) => {
+  return useObservable(liveQuery(querier) as unknown as Observable<T>, { initialValue })
 }

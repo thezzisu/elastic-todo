@@ -1,4 +1,6 @@
-import type { Provider } from './core'
+import { providers } from './core'
 import microsoft from './microsoft'
 
-export const providers: Provider[] = [microsoft]
+Object.assign(providers, Object.fromEntries([microsoft].map((provider) => [provider.id, provider])))
+
+export * from './core'

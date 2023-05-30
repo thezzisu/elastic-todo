@@ -3,13 +3,13 @@
     <VCardTitle>Microsoft To Do</VCardTitle>
     <VCardText>
       <VTextField v-model="name" label="Data Source Name" />
-      <VTextField v-model="token" label="Auth Token" />
+      <VTextField :model-value="account?.username" label="Microsoft Username" readonly />
     </VCardText>
 
     <VCardActions>
       <VSpacer />
-      <VBtn @click="getToken">Get Token</VBtn>
-      <VBtn variant="elevated" color="primary" @click="add">Add</VBtn>
+      <VBtn @click="selectAccount">Select Account</VBtn>
+      <VBtn variant="elevated" color="primary" @click="add" :disabled="!account">Add</VBtn>
     </VCardActions>
   </VCard>
 </template>
@@ -17,45 +17,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import * as msal from '@azure/msal-browser'
-import { useRouter } from 'vue-router'
 import { db } from '@/database'
+import { shallowRef } from 'vue'
+import { loginMsft } from './core'
 
 const emits = defineEmits<{
   (event: 'close'): void
 }>()
 
-const token = ref('')
 const name = ref('')
-const router = useRouter()
+const account = shallowRef<msal.AccountInfo>()
 
-const { href: redirectUri } = router.resolve('/callback')
-
-async function getToken() {
-  const msalConfig = {
-    auth: {
-      clientId: import.meta.env.VITE_MSFT_CLIENT_ID,
-      redirectUri
-    },
-    cache: {
-      cacheLocation: 'localStorage'
-    }
+async function selectAccount() {
+  const result = await loginMsft()
+  if (result) {
+    name.value ||= result.username + ' (Microsoft To Do)'
+    account.value = result
   }
-
-  const msalInstance = new msal.PublicClientApplication(msalConfig)
-
-  const loginRequest = {
-    scopes: ['user.read', 'Tasks.ReadWrite']
-  }
-
-  const resp = await msalInstance.loginPopup(loginRequest)
-  token.value = resp.accessToken
-
-  const user = await fetch('https://graph.microsoft.com/v1.0/me', {
-    headers: {
-      Authorization: `Bearer ${resp.accessToken}`
-    }
-  }).then((res) => res.json())
-  name.value ||= user.displayName + ' (Microsoft To Do)'
 }
 
 async function add() {
@@ -63,7 +41,7 @@ async function add() {
     providerId: 'msft-todo',
     name: name.value,
     data: {
-      token: token.value
+      account: account.value
     }
   })
   emits('close')

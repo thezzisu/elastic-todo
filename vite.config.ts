@@ -9,14 +9,7 @@ import uno from 'unocss/vite'
 const gitHash = execSync('git rev-parse --short HEAD').toString().trim()
 
 export default defineConfig({
-  plugins: [
-    vue(),
-    vuetify({ autoImport: true }),
-    pages({
-      routeStyle: 'nuxt'
-    }),
-    uno()
-  ],
+  plugins: [vue(), vuetify({ autoImport: true }), pages(), uno()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

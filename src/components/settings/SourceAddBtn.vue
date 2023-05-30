@@ -27,13 +27,13 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue'
 import { providers } from '@/providers'
-import type { Provider } from '@/providers/core'
+import type { IProvider } from '@/providers'
 import type { Component } from 'vue'
 
 const dialog = ref(false)
 const addSourceComponent = shallowRef<Component>()
 
-function showAddSourceDialog(provider: Provider) {
+function showAddSourceDialog(provider: IProvider) {
   addSourceComponent.value = provider.components.SourceAdd
   dialog.value = true
 }
