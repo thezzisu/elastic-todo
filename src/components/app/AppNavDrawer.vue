@@ -9,12 +9,7 @@
     </VList>
     <template #append>
       <div class="d-flex">
-        <VListItem
-          prepend-icon="mdi-playlist-plus"
-          title="New list"
-          to="/list/new"
-          class="flex-fill"
-        />
+        <TaskListCreateBtn :sources="sources.sources" />
         <VBtn icon="mdi-cog" variant="text" to="/settings" />
       </div>
     </template>
@@ -27,6 +22,7 @@ import { useAppState } from '@/stores/app'
 import { useDataSources } from '@/stores/source'
 import type { PropsType } from '@/utils/types'
 import type { VListItem } from 'vuetify/components'
+import TaskListCreateBtn from '../settings/TaskListCreateBtn.vue'
 
 const appState = useAppState()
 

@@ -8,6 +8,7 @@ export interface IProvider {
   components: {
     SourceAdd: Component
     TaskListList: Component
+    TaskListAdd: Component
     TaskList: Component
   }
 }

@@ -31,10 +31,11 @@ export const getToken = async (account: msal.AccountInfo) => {
   return token.accessToken
 }
 
-export const fetchMsft = async <R = any>(
+export const fetchMsft = async <R = any, Raw extends boolean = false>(
   account: msal.AccountInfo,
   path: string,
-  init?: RequestInit
+  init?: RequestInit,
+  raw?: Raw
 ) => {
   const token = await getToken(account)
   init ??= {}
@@ -43,8 +44,8 @@ export const fetchMsft = async <R = any>(
     Authorization: `Bearer ${token}`
   }
   const response = await fetch(`https://graph.microsoft.com/v1.0/${path}`, init)
-  const data = await response.json()
-  return data as R
+  const data = raw ? response : await response.json()
+  return data as Raw extends true ? Response : R
 }
 
 export const loginMsft = async () => {
